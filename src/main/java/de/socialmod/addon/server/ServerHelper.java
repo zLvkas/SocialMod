@@ -44,7 +44,7 @@ public class ServerHelper {
         }
 
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://socialmod.vexum.de:8080/updateMedia").openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://api.socialmod.de:8080/updateMedia").openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("playerName", LabyMod.getInstance().getPlayerName());
             urlConnection.setRequestProperty("uuid", LabyMod.getInstance().getPlayerUUID().toString());
@@ -76,7 +76,7 @@ public class ServerHelper {
 
     private JsonObject getJsonObject(final String playerName) {
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://socialmod.vexum.de:8080/getMedia?name=" + playerName).openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://api.socialmod.de:8080/getMedias?name=" + playerName).openConnection();
             urlConnection.setReadTimeout(2500);
             urlConnection.setConnectTimeout(2500);
             if (urlConnection.getResponseCode() != 200) {

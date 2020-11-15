@@ -1,10 +1,12 @@
 package de.socialmod.addon;
 
+import de.socialmod.addon.listener.ChatListener;
 import de.socialmod.addon.server.ServerHelper;
 import de.socialmod.addon.server.response.UpdateResponse;
 import de.socialmod.addon.settings.UpdateMediaSettingsElement;
 import de.socialmod.addon.types.SocialMediaType;
 import de.socialmod.addon.useraction.UserActionEntryInvoker;
+import de.socialmod.addon.utils.Constants;
 import net.labymod.api.LabyModAddon;
 import net.labymod.main.LabyMod;
 import net.labymod.settings.elements.ControlElement;
@@ -19,8 +21,6 @@ import java.util.Map;
 
 public class SocialMod extends LabyModAddon {
 
-    public static final String PREFIX = "§8┃ §6Social§fMod §8× ";
-
     private final Map<SocialMediaType, String> socialMedias = new HashMap<>();
 
     private final ServerHelper serverHelper = new ServerHelper();
@@ -28,6 +28,7 @@ public class SocialMod extends LabyModAddon {
     @Override
     public void onEnable() {
         UserActionEntryInvoker.addUserActions();
+        LabyMod.getInstance().getEventManager().register(new ChatListener());
     }
 
     @Override
@@ -59,10 +60,13 @@ public class SocialMod extends LabyModAddon {
             }
 
             Minecraft.getMinecraft().displayGuiScreen(null);
-            UpdateResponse updateResponse = this.serverHelper.updateSocialMedia(this.socialMedias);
-            LabyMod.getInstance().displayMessageInChat(updateResponse.getMessage());
-
-            super.saveConfig();
+            Constants.EXECUTOR.execute(() -> {
+                final UpdateResponse updateResponse = this.serverHelper.updateSocialMedia(this.socialMedias);
+                LabyMod.getInstance().displayMessageInChat(updateResponse.getMessage());
+                if (updateResponse.equals(UpdateResponse.SUCCESS)) {
+                    super.saveConfig();
+                }
+            });
         });
 
         for (SocialMediaType mediaType : SocialMediaType.values()) {

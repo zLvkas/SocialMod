@@ -1,7 +1,6 @@
 package de.socialmod.addon.utils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 public class ReflectionUtils {
 
@@ -21,40 +20,11 @@ public class ReflectionUtils {
         throw new UnsupportedOperationException();
     }
 
-    public static Field getFieldByNames(Class<?> clazz, String... fieldNames) {
-        for (String fieldName : fieldNames) {
-            Field field = getFieldByName(clazz, fieldName);
-            if (field != null) {
-                return field;
-            }
-        }
-
-        return null;
-    }
-
     public static Field getFieldByName(Class<?> clazz, String fieldName) {
         try {
             return clazz.getDeclaredField(fieldName);
         } catch (NoSuchFieldException exception) {
             return null;
-        }
-    }
-
-    public static void set(Class<?> source, Object instance, Object newValue, String... fieldNames) {
-        Field field = getFieldByNames(source, fieldNames);
-        if (field == null) {
-            return;
-        }
-
-        try {
-            if (MODIFIERS_FIELD != null && Modifier.isFinal(field.getModifiers())) {
-                MODIFIERS_FIELD.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-            }
-
-            field.setAccessible(true);
-            field.set(instance, newValue);
-        } catch (IllegalAccessException exception) {
-            exception.printStackTrace();
         }
     }
 

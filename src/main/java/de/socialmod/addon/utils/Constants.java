@@ -5,6 +5,8 @@ import java.util.concurrent.Executors;
 
 public class Constants {
 
-    public static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
+    public static final String PREFIX = "§8┃ §6Social§fMod §8× ";
+
+    public static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(1);
 
 }

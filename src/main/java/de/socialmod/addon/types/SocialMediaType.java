@@ -49,14 +49,14 @@ public enum SocialMediaType {
     DISCORD(
             null,
             "§9Discord",
-            true,
+            false,
             8
     ),
 
     STEAM(
             null,
             "§1Steam",
-            true,
+            false,
             9
     );
 

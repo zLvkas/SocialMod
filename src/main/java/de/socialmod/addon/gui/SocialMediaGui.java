@@ -2,6 +2,7 @@ package de.socialmod.addon.gui;
 
 import de.socialmod.addon.server.ServerHelper;
 import de.socialmod.addon.types.SocialMediaType;
+import de.socialmod.addon.utils.Constants;
 import net.labymod.main.LabyMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -28,9 +29,12 @@ public class SocialMediaGui extends GuiScreen {
 
     private final Map<SocialMediaType, String> mediaTypes;
 
+    private final String playerName;
+
     public SocialMediaGui(final String playerName) {
         final ServerHelper serverHelper = new ServerHelper();
         this.mediaTypes = serverHelper.getSocialMedias(playerName);
+        this.playerName = playerName;
     }
 
     @Override
@@ -62,7 +66,7 @@ public class SocialMediaGui extends GuiScreen {
                             LabyMod.getInstance().getDrawUtils().getScaledResolution().getScaledHeight() / 2 - 10,
                             buttonWidth,
                             20,
-                            "§cNo Medias"
+                            "§ckeine Medias"
                     )
             );
             return;
@@ -94,7 +98,7 @@ public class SocialMediaGui extends GuiScreen {
 
         double y = 40 + 2.0625;
         for (SocialMediaType mediaType : this.mediaTypes.keySet()) {
-            Minecraft.getMinecraft().renderEngine.bindTexture(mediaType.getResourceLocation());
+            Minecraft.getMinecraft().getTextureManager().bindTexture(mediaType.getResourceLocation());
             LabyMod.getInstance().getDrawUtils().drawTexture(
                     center + 2.5,
                     y,
@@ -119,7 +123,7 @@ public class SocialMediaGui extends GuiScreen {
         }
 
         if (button.id == NO_MEDIAS_AVAILABLE_BUTTON_ID) {
-            LabyMod.getInstance().displayMessageInChat("§7NO MEDIA");
+            LabyMod.getInstance().displayMessageInChat(Constants.PREFIX + "§7Der Spieler §6" + this.playerName + " §7hat §ckeine §eSocialMedias §7verlinkt!");
             Minecraft.getMinecraft().displayGuiScreen(null);
         }
 
@@ -141,7 +145,7 @@ public class SocialMediaGui extends GuiScreen {
         }
 
         this.setClipboardContent(socialName);
-        LabyMod.getInstance().displayMessageInChat("§7Der Name wurde §aerfolgreich §7kopiert!");
+        LabyMod.getInstance().displayMessageInChat(Constants.PREFIX + "§7Der " + mediaType.getDisplayName() + " Name §7wurde §akopiert§7!");
     }
 
     private SocialMediaType getSocialMediaTypeById(int id) {
