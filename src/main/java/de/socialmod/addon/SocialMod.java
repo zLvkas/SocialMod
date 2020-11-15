@@ -21,25 +21,20 @@ import java.util.Map;
 
 public class SocialMod extends LabyModAddon {
 
-    private final Map<SocialMediaType, String> socialMedias = new HashMap<>();
+    public final Map<SocialMediaType, String> socialMedias = new HashMap<>();
 
     private final ServerHelper serverHelper = new ServerHelper();
 
     @Override
     public void onEnable() {
         UserActionEntryInvoker.addUserActions();
+
         LabyMod.getInstance().getEventManager().register(new ChatListener());
     }
 
     @Override
     public void loadConfig() {
-        for (SocialMediaType mediaType : SocialMediaType.values()) {
-            if (!super.getConfig().has(mediaType.name().toLowerCase())) {
-                super.getConfig().addProperty(mediaType.name().toLowerCase(), "");
-            }
-
-            this.socialMedias.put(mediaType, super.getConfig().get(mediaType.name().toLowerCase()).getAsString());
-        }
+        this.socialMedias.putAll(this.serverHelper.getSocialMedias(LabyMod.getInstance().getPlayerName()));
     }
 
     @Override
@@ -49,39 +44,36 @@ public class SocialMod extends LabyModAddon {
         updateMediaSettingsElement.setDescriptionText("Klicke, um deine Änderungen zu speichern.");
         list.add(updateMediaSettingsElement);
         updateMediaSettingsElement.setClickListener(() -> {
+            Minecraft.getMinecraft().displayGuiScreen(null);
+
             for (Map.Entry<SocialMediaType, String> entry : this.socialMedias.entrySet()) {
                 if (entry.getValue().length() > 32) {
-                    Minecraft.getMinecraft().displayGuiScreen(null);
-                    LabyMod.getInstance().displayMessageInChat(UpdateResponse.NAME_TOO_LONG.getMessage().replace("%media%", entry.getKey().getDisplayName()));
+                    LabyMod.getInstance().displayMessageInChat(UpdateResponse.NAME_TOO_LONG.getMessage()
+                            .replace("%media%", entry.getKey().getDisplayName())
+                    );
                     return;
                 }
-
-                super.getConfig().addProperty(entry.getKey().name().toLowerCase(), entry.getValue());
             }
 
-            Minecraft.getMinecraft().displayGuiScreen(null);
             Constants.EXECUTOR.execute(() -> {
                 final UpdateResponse updateResponse = this.serverHelper.updateSocialMedia(this.socialMedias);
                 LabyMod.getInstance().displayMessageInChat(updateResponse.getMessage());
-                if (updateResponse.equals(UpdateResponse.SUCCESS)) {
-                    super.saveConfig();
-                }
             });
         });
 
         for (SocialMediaType mediaType : SocialMediaType.values()) {
-            this.createOption(mediaType);
+            this.createOptions(mediaType);
         }
     }
 
-    private void createOption(final SocialMediaType mediaType) {
+    public void createOptions(final SocialMediaType mediaType) {
+        final String currentValue = this.socialMedias.get(mediaType);
         final StringElement setting = new StringElement(
                 mediaType.getDisplayName(),
                 new ControlElement.IconData(mediaType.getResourceLocation()),
-                super.getConfig().get(mediaType.name().toLowerCase()).getAsString(),
+                currentValue == null ? "" : currentValue,
                 name -> this.socialMedias.put(mediaType, name));
 
         super.getSubSettings().add(setting);
     }
-
 }

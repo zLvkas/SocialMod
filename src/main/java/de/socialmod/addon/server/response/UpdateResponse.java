@@ -1,11 +1,12 @@
 package de.socialmod.addon.server.response;
 
 import de.socialmod.addon.utils.Constants;
+import net.labymod.main.LabyMod;
 
 public enum UpdateResponse {
 
     SUCCESS(
-            Constants.PREFIX + "§7Deine §eSocialMedias §7wurden §aerfolgreich gespeichert§7!",
+            Constants.PREFIX + "§7Die §eSocialMedias §7für §6%player% §7wurden §aerfolgreich gespeichert§7!",
             200
     ),
 
@@ -43,7 +44,7 @@ public enum UpdateResponse {
     }
 
     public String getMessage() {
-        return this.message;
+        return this.message.replace("%player%", LabyMod.getInstance().getPlayerName());
     }
 
     public int getCode() {
