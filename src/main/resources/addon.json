@@ -3,5 +3,8 @@
   "name": "SocialMod",
   "author": "Lvkas_",
   "description": "Link your social media accounts so that other players can view them.",
+  "icon": "http://api.socialmod.de/icon.png",
+  "version": 1,
+  "category": 2,
   "mainClass": "de.socialmod.addon.SocialMod"
 }
