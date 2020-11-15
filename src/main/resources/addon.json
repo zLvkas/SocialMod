@@ -1,0 +1,7 @@
+{
+  "uuid": "%uuid%",
+  "name": "SocialMod",
+  "author": "Lvkas_",
+  "description": "Link your social media accounts so that other players can view them.",
+  "mainClass": "de.socialmod.addon.SocialMod"
+}
