@@ -11,7 +11,7 @@ public enum UpdateResponse {
     ),
 
     FORBIDDEN(
-            Constants.PREFIX + "§7Du wurdest dauerhaft §cgesperrt§7!",
+            Constants.PREFIX + "§7Deine §eSocialMedias §7konnten §cnicht §7geupdated werden, da du dauerhaft §cgesperrt§7 wurdest!",
             401
     ),
 
