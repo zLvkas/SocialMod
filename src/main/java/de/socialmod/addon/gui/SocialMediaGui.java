@@ -32,8 +32,7 @@ public class SocialMediaGui extends GuiScreen {
     private final String playerName;
 
     public SocialMediaGui(final String playerName) {
-        final ServerHelper serverHelper = new ServerHelper();
-        this.mediaTypes = serverHelper.getSocialMedias(playerName);
+        this.mediaTypes = ServerHelper.getSocialMedias(playerName);
         this.playerName = playerName;
     }
 
@@ -53,11 +52,11 @@ public class SocialMediaGui extends GuiScreen {
 
         this.buttonList.add(new GuiButton(CLOSE_GUI_BUTTON_ID, center, 200, buttonWidth, 20, "Zurück"));
 
-        this.handleButtonAdd(center);
+        this.initButtons(center);
         super.initGui();
     }
 
-    private void handleButtonAdd(int center) {
+    private void initButtons(int center) {
         if (mediaTypes.isEmpty()) {
             this.buttonList.add(
                     new GuiButton(
@@ -158,7 +157,7 @@ public class SocialMediaGui extends GuiScreen {
         return null;
     }
 
-    private String getButtonText(final SocialMediaType mediaType, String text) {
+    private String getButtonText(final SocialMediaType mediaType, final String text) {
         return mediaType.getDisplayName() + " §8× §f" + text;
     }
 

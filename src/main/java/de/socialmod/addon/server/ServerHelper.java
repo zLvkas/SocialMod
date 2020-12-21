@@ -20,11 +20,11 @@ import java.util.Map;
 
 public class ServerHelper {
 
-    private static final JsonParser jsonParser = new JsonParser();
+    private static final JsonParser JSON_PARSER = new JsonParser();
 
-    public Map<SocialMediaType, String> getSocialMedias(final String playerName) {
+    public static Map<SocialMediaType, String> getSocialMedias(final String playerName) {
         final Map<SocialMediaType, String> socialMediaTypes = new HashMap<>();
-        final JsonObject jsonObject = this.getJsonObject(playerName);
+        final JsonObject jsonObject = getJsonObject(playerName);
         if (jsonObject == null) {
             return socialMediaTypes;
         }
@@ -38,8 +38,8 @@ public class ServerHelper {
         return socialMediaTypes;
     }
 
-    public UpdateResponse updateSocialMedia(final Map<SocialMediaType, String> medias) {
-        if (!this.authorize()) {
+    public static UpdateResponse updateSocialMedia(final Map<SocialMediaType, String> medias) {
+        if (!authorize()) {
             return UpdateResponse.AUTH_FAILED;
         }
 
@@ -59,7 +59,7 @@ public class ServerHelper {
         }
     }
 
-    private boolean authorize() {
+    private static boolean authorize() {
         final Session session = Minecraft.getMinecraft().getSession();
         if (session == null) {
             return false;
@@ -74,7 +74,7 @@ public class ServerHelper {
         }
     }
 
-    private JsonObject getJsonObject(final String playerName) {
+    private static JsonObject getJsonObject(final String playerName) {
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://api.socialmod.de:8080/getMedias?name=" + playerName).openConnection();
             urlConnection.setReadTimeout(2500);
@@ -84,7 +84,7 @@ public class ServerHelper {
             }
 
             final String content = new String(IOUtils.toByteArray(urlConnection.getInputStream()), StandardCharsets.UTF_8);
-            return jsonParser.parse(content).getAsJsonObject();
+            return JSON_PARSER.parse(content).getAsJsonObject();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
