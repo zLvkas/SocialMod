@@ -10,6 +10,11 @@ public enum UpdateResponse {
             200
     ),
 
+    TOO_MANY_REQUESTS(
+            Constants.PREFIX + "§7Du kannst deine §eSocialMedias §7nur alle §610 Sekunden §7updaten!",
+            429
+    ),
+
     NAME_TOO_LONG(
             Constants.PREFIX + "§7Dein %media% Name §7ist §czu lang§7! §8(§7maximal 32 Zeichen§8)",
             418
