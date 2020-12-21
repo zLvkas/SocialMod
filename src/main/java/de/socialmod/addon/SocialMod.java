@@ -23,8 +23,6 @@ public class SocialMod extends LabyModAddon {
 
     public final Map<SocialMediaType, String> socialMedias = new HashMap<>();
 
-    private final ServerHelper serverHelper = new ServerHelper();
-
     @Override
     public void onEnable() {
         UserActionEntryInvoker.addUserActions();
@@ -34,7 +32,7 @@ public class SocialMod extends LabyModAddon {
 
     @Override
     public void loadConfig() {
-        this.socialMedias.putAll(this.serverHelper.getSocialMedias(LabyMod.getInstance().getPlayerName()));
+        this.socialMedias.putAll(ServerHelper.getSocialMedias(LabyMod.getInstance().getPlayerName()));
     }
 
     @Override
@@ -56,7 +54,7 @@ public class SocialMod extends LabyModAddon {
             }
 
             Constants.EXECUTOR.execute(() -> {
-                final UpdateResponse updateResponse = this.serverHelper.updateSocialMedia(this.socialMedias);
+                final UpdateResponse updateResponse = ServerHelper.updateSocialMedia(this.socialMedias);
                 LabyMod.getInstance().displayMessageInChat(updateResponse.getMessage());
             });
         });

@@ -1,10 +1,9 @@
 package de.socialmod.addon.listener;
 
-import de.socialmod.addon.gui.SocialMediaGui;
+import de.socialmod.addon.server.ServerHelper;
 import de.socialmod.addon.utils.Constants;
 import net.labymod.api.events.MessageSendEvent;
 import net.labymod.main.LabyMod;
-import net.minecraft.client.Minecraft;
 
 public class ChatListener implements MessageSendEvent {
 
@@ -20,7 +19,7 @@ public class ChatListener implements MessageSendEvent {
             return true;
         }
 
-        Constants.EXECUTOR.execute(() -> Minecraft.getMinecraft().displayGuiScreen(new SocialMediaGui(strings[1])));
+        ServerHelper.displayGuiScreen(strings[1]);
         return true;
     }
 }

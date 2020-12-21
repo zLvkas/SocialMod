@@ -1,16 +1,15 @@
 package de.socialmod.addon.gui;
 
-import de.socialmod.addon.server.ServerHelper;
 import de.socialmod.addon.types.SocialMediaType;
 import de.socialmod.addon.utils.Constants;
 import net.labymod.main.LabyMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 import java.util.Map;
 
 public class SocialMediaGui extends GuiScreen {
@@ -31,8 +30,8 @@ public class SocialMediaGui extends GuiScreen {
 
     private final String playerName;
 
-    public SocialMediaGui(final String playerName) {
-        this.mediaTypes = ServerHelper.getSocialMedias(playerName);
+    public SocialMediaGui(final String playerName, Map<SocialMediaType, String> mediaTypes) {
+        this.mediaTypes = mediaTypes;
         this.playerName = playerName;
     }
 
@@ -48,12 +47,11 @@ public class SocialMediaGui extends GuiScreen {
             }
         }
 
-        int center = (LabyMod.getInstance().getDrawUtils().getScaledResolution().getScaledWidth() / 2) - buttonWidth / 2;
+        int center = (new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth() / 2) - buttonWidth / 2;
 
         this.buttonList.add(new GuiButton(CLOSE_GUI_BUTTON_ID, center, 200, buttonWidth, 20, "Zurück"));
 
         this.initButtons(center);
-        super.initGui();
     }
 
     private void initButtons(int center) {
@@ -113,9 +111,7 @@ public class SocialMediaGui extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
-        super.actionPerformed(button);
-
+    protected void actionPerformed(GuiButton button) {
         if (button.id == CLOSE_GUI_BUTTON_ID) {
             Minecraft.getMinecraft().displayGuiScreen(null);
             return;

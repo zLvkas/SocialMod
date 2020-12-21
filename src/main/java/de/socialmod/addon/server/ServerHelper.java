@@ -3,9 +3,11 @@ package de.socialmod.addon.server;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.exceptions.AuthenticationException;
+import de.socialmod.addon.gui.SocialMediaGui;
 import de.socialmod.addon.server.response.UpdateResponse;
 import de.socialmod.addon.server.response.UpdateResponseHelper;
 import de.socialmod.addon.types.SocialMediaType;
+import de.socialmod.addon.utils.Constants;
 import net.labymod.main.LabyMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
@@ -21,6 +23,13 @@ import java.util.Map;
 public class ServerHelper {
 
     private static final JsonParser JSON_PARSER = new JsonParser();
+
+    public static void displayGuiScreen(final String playerName) {
+        Constants.EXECUTOR.execute(() -> {
+            final Map<SocialMediaType, String> mediaTypes = ServerHelper.getSocialMedias(playerName);
+            Minecraft.getMinecraft().addScheduledTask(() -> Minecraft.getMinecraft().displayGuiScreen(new SocialMediaGui(playerName, mediaTypes)));
+        });
+    }
 
     public static Map<SocialMediaType, String> getSocialMedias(final String playerName) {
         final Map<SocialMediaType, String> socialMediaTypes = new HashMap<>();
