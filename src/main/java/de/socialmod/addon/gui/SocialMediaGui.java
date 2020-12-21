@@ -49,7 +49,7 @@ public class SocialMediaGui extends GuiScreen {
 
         int center = (new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth() / 2) - buttonWidth / 2;
 
-        this.buttonList.add(new GuiButton(CLOSE_GUI_BUTTON_ID, center, 200, buttonWidth, 20, "Zurück"));
+        this.buttonList.add(new GuiButton(CLOSE_GUI_BUTTON_ID, center, 205, buttonWidth, 20, "Zurück"));
 
         this.initButtons(center);
     }
@@ -91,13 +91,16 @@ public class SocialMediaGui extends GuiScreen {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        int center = (LabyMod.getInstance().getDrawUtils().getScaledResolution().getScaledWidth() / 2) - buttonWidth / 2;
+        int centerX = LabyMod.getInstance().getDrawUtils().getScaledResolution().getScaledWidth() / 2;
+        LabyMod.getInstance().getDrawUtils().drawCenteredString(this.playerName, centerX, 15);
+
+        int buttonX = centerX - buttonWidth / 2;
 
         double y = 40 + 2.0625;
         for (SocialMediaType mediaType : this.mediaTypes.keySet()) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(mediaType.getResourceLocation());
             LabyMod.getInstance().getDrawUtils().drawTexture(
-                    center + 2.5,
+                    buttonX + 2.5,
                     y,
                     256,
                     256,
